@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'rspec-rails', '~> 5.0.0'
   gem 'shoulda-matchers', '~> 5.1.0'
 end
 
@@ -50,6 +51,6 @@ group :development do
   # gem "spring"
   gem 'better_errors', '2.9.1'
   gem 'binding_of_caller'
-  gem 'pry-rails', '~> 0.14.1'
+  gem 'pry-rails', '~> 0.3.9'
 end
 
