@@ -41,8 +41,15 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
+group :test do
+  gem 'shoulda-matchers', '~> 5.1.0'
+end
+
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'better_errors', '2.9.1'
+  gem 'binding_of_caller'
+  gem 'pry-rails', '~> 0.14.1'
 end
 
