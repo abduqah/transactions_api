@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Api::TransactionsController, type: :controller do
+  before do
+    params = {
+      customer_id: 1,
+      input_amount: 321,
+      output_amount: 321,
+      input_currency: '$',
+      output_currency: '$'
+    }
+
+    Transaction.create!(params)
+    params[:customer_id] = 2
+    params[:input_currency] = '€'
+    params[:output_currency] = '€'
+    Transaction.create!(params)
+  end
+
   describe 'GET #index' do
     subject { get :index, format: :json }
 
@@ -50,7 +66,9 @@ RSpec.describe Api::TransactionsController, type: :controller do
         transaction: {
           customer_id: 1,
           input_amount: 321,
-          output_amount: 321
+          output_amount: 321,
+          input_currency: '$',
+          output_currency: '$'
         }
       }
     }
@@ -58,7 +76,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
     subject { post :create, params: params, format: :json }
 
     it { should have_http_status(:success) }
-    it { should permit(:customer_id, :input_amount, :output_amount).
+    it { should permit(:customer_id, :input_amount, :output_amount, :input_currency, :output_currency).
                  for(:create, params: params).
                  on(:transaction) }
 

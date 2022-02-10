@@ -1,3 +1,3 @@
 class Transaction < ApplicationRecord
-  validates_presence_of(:customer_id, :input_amount, :output_amount)
+  validates_presence_of(:customer_id, :input_amount, :output_amount, :input_currency, :output_currency)
 end

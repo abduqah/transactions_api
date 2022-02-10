@@ -30,7 +30,9 @@ class Api::TransactionsController < Api::ApiController
     params.require(:transaction).permit(
       :customer_id,
       :input_amount,
-      :output_amount
+      :output_amount,
+      :input_currency,
+      :output_currency
     )
   end
 end
