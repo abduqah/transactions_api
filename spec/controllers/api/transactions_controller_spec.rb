@@ -11,17 +11,22 @@ RSpec.describe Api::TransactionsController, type: :controller do
     subject { get :show, params: {id: 1}, format: :json }
 
     it { should have_http_status(:success) }
-    it { should permit(:id).for(:transactions) }
   end
 
   describe 'POST #create' do
-    subject { post :create, params: {transaction: {
-      customer_id: 1,
-      input_amount: 321,
-      output_amount: 321
-    }}, format: :json }
+    params = {
+      transaction: {
+        customer_id: 1,
+        input_amount: 321,
+        output_amount: 321
+      }
+    }
+
+    subject { post :create, params: params, format: :json }
 
     it { should have_http_status(:success) }
-    it { should permit(:customer_id, :input_amount, :output_amount).for(:transactions) }
+    it { should permit(:customer_id, :input_amount, :output_amount).
+                 for(:create, params: params).
+                 on(:transaction) }
   end
 end
