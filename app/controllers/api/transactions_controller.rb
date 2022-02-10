@@ -4,9 +4,11 @@ class Api::TransactionsController < Api::ApiController
   end
 
   def show
-    transaction_id
+    transaction = Transaction.find_by_id(transaction_id[:id])
 
-    head :ok
+    return head :not_found unless transaction
+
+    render json: { data: transaction }, status: :ok
   end
 
   def create
