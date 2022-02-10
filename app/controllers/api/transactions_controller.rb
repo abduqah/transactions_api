@@ -1,6 +1,6 @@
 class Api::TransactionsController < Api::ApiController
   def index
-    head :ok
+    render json: { data: Transaction.all }, status: :ok
   end
 
   def show

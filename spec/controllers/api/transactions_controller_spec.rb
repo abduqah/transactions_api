@@ -5,6 +5,16 @@ RSpec.describe Api::TransactionsController, type: :controller do
     subject { get :index, format: :json }
 
     it { should have_http_status(:success) }
+
+    context 'Show system data' do
+      it 'gets existing data' do
+        should have_http_status(:success)
+
+        body = JSON.parse(response.body)
+
+        expect(body['data'].size).to eq(2)
+      end
+    end
   end
 
   describe 'GET #show' do
