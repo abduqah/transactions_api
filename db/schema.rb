@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_09_152511) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_10_123559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_09_152511) do
     t.decimal "output_amount", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "input_currency", null: false
+    t.string "output_currency", null: false
   end
 
 end
