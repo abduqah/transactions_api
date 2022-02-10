@@ -45,11 +45,13 @@ RSpec.describe Api::TransactionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    params = {
-      transaction: {
-        customer_id: 1,
-        input_amount: 321,
-        output_amount: 321
+    let(:params) {
+      {
+        transaction: {
+          customer_id: 1,
+          input_amount: 321,
+          output_amount: 321
+        }
       }
     }
 
@@ -59,5 +61,35 @@ RSpec.describe Api::TransactionsController, type: :controller do
     it { should permit(:customer_id, :input_amount, :output_amount).
                  for(:create, params: params).
                  on(:transaction) }
+
+    context 'create transactions' do
+      it 'create a transaction and return it' do
+        post :create, params: params, format: :json
+
+        expect(response.code).to eq("200")
+
+        body = JSON.parse(response.body)
+        transaction = body['data']
+
+        expect(body['data']['id']).not_to be_nil
+        expect(body['data']['customer_id'].to_f).to eq(params[:transaction][:customer_id])
+        expect(body['data']['input_amount'].to_f).to eq(params[:transaction][:input_amount])
+        expect(body['data']['output_amount'].to_f).to eq(params[:transaction][:output_amount])
+      end
+
+      it 'return issues if creation not succeed' do
+        params[:transaction].delete(:customer_id)
+
+        post :create, params: params, format: :json
+
+        expect(response.code).to eq("422")
+
+        body = JSON.parse(response.body)
+        errors = body['errors']
+
+        expect(errors).not_to be_empty
+        expect(errors['customer_id']).to eq(["can't be blank"])
+      end
+    end
   end
 end

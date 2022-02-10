@@ -12,9 +12,12 @@ class Api::TransactionsController < Api::ApiController
   end
 
   def create
-    transaction_params
+    transaction = Transaction.create!(transaction_params)
 
-    head :ok
+    render json: { data: transaction }, status: :ok
+
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors }, status: :unprocessable_entity
   end
 
   private
