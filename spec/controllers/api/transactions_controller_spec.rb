@@ -47,6 +47,7 @@ RSpec.describe Api::TransactionsController, type: :controller do
 
       expect(body['data'].size).to be_truthy
       expect(body['data']['customer_id']).to eq(@transaction.customer_id)
+      expect(body['data']['input_amount'].to_f).to eq(@transaction.input_amount)
     end
 
     it 'return not found for non existing transactions' do
@@ -108,6 +109,47 @@ RSpec.describe Api::TransactionsController, type: :controller do
         expect(errors).not_to be_empty
         expect(errors['customer_id']).to eq(["can't be blank"])
       end
+    end
+  end
+
+  describe 'PUT #update' do
+    let(:transaction_1) {
+      Transaction.first
+    }
+
+    let!(:transaction_1_id) {
+      transaction_1.id
+    }
+
+    let!(:params) {
+      {
+        id: transaction_1_id,
+        transaction: {
+          customer_id: 123
+        }
+      }
+    }
+    
+
+    it 'update the first transaction with the new params' do
+      put :update, params: params, format: :json
+
+      expect(response.code).to eq('200')
+      data = JSON.parse(response.body)
+      expect(data['data']['id']).to eq(transaction_1_id)
+      expect(data['data']['customer_id']).to eq(params[:transaction][:customer_id])
+    end
+
+    it 'not allow updating with empty values' do
+      params[:transaction][:customer_id] = nil
+
+      put :update, params: params, format: :json
+
+      expect(response.code).to eq('422')
+      
+      data = JSON.parse(response.body)
+
+      expect(data['errors']).not_to be_empty
     end
   end
 end
